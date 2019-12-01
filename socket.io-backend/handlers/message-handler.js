@@ -2,26 +2,26 @@
 let currentMessageId = 1;
 
 // creates the message object
-function createMessage(userId, messageText) {
+function createMessage(user, messageText) {
     return  {
     _id: currentMessageId++,
     text: messageText,
     createdAt: new Date(),
     user: {
-      _id: userId,
-      name: 'Test User',
+      _id: user.userId,
+      name: user.userName,
       avatar: 'https://placeimg.com/140/140/any',
     },
   };
 }
 
-function handleMessage(socket, userIds) {
-    socket.on("message", messageText => {
+function handleMessage(socket, users) {
+    socket.on("messageText", messageText => {
         // find the userID based on the socketid in the mapkey
-        const userId = userIds[socket.id];
+        const user = users[socket.id];
         const message = createMessage(userId, messageText)
         // send a message to everyone except the socket that is broadcasting
-        socket.broadcast.emit("message", message);
+        socket.broadcast.emit("messageObject", message);
         console.log(message)
       });
 }

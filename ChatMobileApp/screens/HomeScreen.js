@@ -15,7 +15,7 @@ const socket = useRef(null);
 // useEffect to listen to backend, send a message to backend and set the messages which have already been sent - which update on reload component
   useEffect(() => {
     socket.current = io("http://192.168.0.10:3001");
-    socket.current.on("message", message => {
+    socket.current.on("messageObject", message => {
       // on component load, sets the messages to the current state, plus the message if it exists
     setRecvMessages(prevState => GiftedChat.append(prevState, message));
     
@@ -25,7 +25,7 @@ const socket = useRef(null);
   // function which sends the message to send to the backend, then clears out the text view box
   const sendMessage = messages => {
     console.log(messages)
-    socket.current.emit("message", messages[0].text);
+    socket.current.emit("messageText", messages[0].text);
     // on submit, sets the messages to the current state
     setRecvMessages(prevState => GiftedChat.append(prevState, messages));
   };
