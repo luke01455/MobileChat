@@ -11,6 +11,7 @@ function createUserAvatarUrl() {
   return `https://placeimg.com/${rand1}/${rand2}/any`
 }
 
+// io emit emits to all sockets connected, socket emit only emits the user socket
 io.on("connection", socket => {
   console.log("a user connected!");
   console.log(socket.id);
@@ -26,7 +27,7 @@ io.on("connection", socket => {
     // listens for different socket.io action types and does something based on the action type
     switch (action.type) {
       case "server/hello":
-        console.log("Got hello event", action.data);
+        // emitting test action literally just passing a string to server
         socket.emit("action", { type: "message", data: "Good day!" });
         break;
       case "server/join":
@@ -34,6 +35,12 @@ io.on("connection", socket => {
         // setting username and avatar variables inside the user object 
         users[socket.id].userName = action.data; // action.data = username in this case
         users[socket.id].avatar = createUserAvatarUrl();
+        // get all the user information for friends list
+        const values = Object.values(users);
+        console.log(values)
+        const onlyWithUsernames = values.filter(u => u.userName !== undefined);
+        // emit new action containing the user data
+        io.emit("action", { type: "users_online", data: onlyWithUsernames})
         break;
     }
   });

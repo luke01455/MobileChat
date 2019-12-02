@@ -10,7 +10,9 @@ import io from "socket.io-client";
 import React from "react";
 import AppContainer from "./AppContainer";
 
-const socket = io("http://192.168.0.10:3001")
+const socket = io("http://192.168.0.10:3001");
+
+// calls all action typed aimed the the server with a prefix of server/
 const socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 // creating the reducer, listening for messages
@@ -18,6 +20,8 @@ function reducer(state = {}, action) {
   switch(action.type) {
     case "message":
       return { ...state, message: action.data};
+    case "users_online":
+      return { ...state, usersOnline: action.data};
     default:
       return state;
   }
