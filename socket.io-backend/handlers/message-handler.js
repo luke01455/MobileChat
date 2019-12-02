@@ -10,7 +10,7 @@ function createMessage(user, messageText) {
     user: {
       _id: user.userId,
       name: user.userName,
-      avatar: 'https://placeimg.com/140/140/any',
+      avatar: user.avatar,
     },
   };
 }
