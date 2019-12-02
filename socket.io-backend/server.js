@@ -18,17 +18,23 @@ io.on("connection", socket => {
   users[socket.id] = { userId: currentUserId++ };
   // adds a username to the socket map key which the user can select
   socket.on("join", username => {
-    // setting username and avatar variables inside the user object 
-    users[socket.id].userName = username;
-    users[socket.id].avatar = createUserAvatarUrl();
+
     // calls the message handler from message-handler.js and passes in the socket and userid
     messageHandler.handleMessage(socket, users);
   });
   socket.on("action", action => {
+    // listens for different socket.io action types and does something based on the action type
     switch (action.type) {
       case "server/hello":
         console.log("Got hello event", action.data);
         socket.emit("action", { type: "message", data: "Good day!" });
+        break;
+      case "server/join":
+        console.log("Got join event", action.data);
+        // setting username and avatar variables inside the user object 
+        users[socket.id].userName = action.data; // action.data = username in this case
+        users[socket.id].avatar = createUserAvatarUrl();
+        break;
     }
   });
 });
