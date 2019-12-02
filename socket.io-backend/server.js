@@ -21,9 +21,16 @@ io.on("connection", socket => {
     // setting username and avatar variables inside the user object 
     users[socket.id].userName = username;
     users[socket.id].avatar = createUserAvatarUrl();
+    // calls the message handler from message-handler.js and passes in the socket and userid
+    messageHandler.handleMessage(socket, users);
   });
-  // calls the message handler from message-handler.js and passes in the socket and userid
-  messageHandler.handleMessage(socket, users);
+  socket.on("action", action => {
+    switch (action.type) {
+      case "server/hello":
+        console.log("Got hello event", action.data);
+        socket.emit("action", { type: "message", data: "Good day!" });
+    }
+  });
 });
 
 io.listen(3001);

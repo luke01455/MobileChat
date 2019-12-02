@@ -16,12 +16,12 @@ function createMessage(user, messageText) {
 }
 
 function handleMessage(socket, users) {
-    socket.on("messageText", messageText => {
+    socket.on("message", messageText => {
         // find the userID based on the socketid in the mapkey
         const user = users[socket.id];
         const message = createMessage(user, messageText)
         // send a message to everyone except the socket that is broadcasting
-        socket.broadcast.emit("messageObject", message);
+        socket.broadcast.emit("message", message);
         console.log(message)
       });
 }
