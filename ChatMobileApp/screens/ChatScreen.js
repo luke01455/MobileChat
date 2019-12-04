@@ -12,6 +12,10 @@ ChatScreen.navigationOptions = screenProps => ({
 export default function ChatScreen({ navigation }) {
   const dispatch = useDispatch();
   const selfUser = useSelector(state => state.selfUser);
+  const userId = navigation.getParam("userId");
+  const messages = conversations[userId].messages
+;
+  const conversations = useSelector(state => state.conversations);
 
   return (
     <View style={{ flex: 1 }}>
@@ -19,12 +23,13 @@ export default function ChatScreen({ navigation }) {
       <GiftedChat
         renderUsernameOnMessage
         // shows the recvMessages state array as the messages
-        messages={[]}
+        messages={messages}
         // sends a preditermined array from the repo which also contains the text from the chatbox
         onSend={messages =>
+        // dispatch that we have sent a private message, with the message and the conversation id
           dispatch({
-            type: "server/private-message",
-            data: { text: messages[0].text, to: navigation.getParam("userId") }
+            type: "private_message",
+            data: { message: messages[0], conversationId: userId }
           })
         }
         // this is left as 1 so on the front end this will look like the messages from themself should be blue
