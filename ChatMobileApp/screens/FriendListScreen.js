@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
-const FriendListScreen = () => {
+const FriendListScreen = ({ navigation }) => {
     const usersOnline = useSelector(state => state.usersOnline);
     console.log("usersOnline", usersOnline);
 
@@ -15,7 +15,7 @@ const FriendListScreen = () => {
                 renderItem={({item}) =>{
                     console.log("item", item);
                 return (
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Chat", { name: item.userName })}>
                     <View style={itemContainerStyle}>
                         <Image 
                         style={avatarImgStyle}
