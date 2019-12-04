@@ -15,7 +15,9 @@ const FriendListScreen = ({ navigation }) => {
                 renderItem={({item}) =>{
                     console.log("item", item);
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate("Chat", { name: item.userName })}>
+                    <TouchableOpacity onPress={() => 
+                        navigation.navigate("Chat", 
+                        { name: item.userName, userId: item.userId })}>
                     <View style={itemContainerStyle}>
                         <Image 
                         style={avatarImgStyle}

@@ -27,7 +27,6 @@ io.on("connection", socket => {
   users[socket.id] = { userId: uuidv1() };
   // adds a username to the socket map key which the user can select
   socket.on("join", username => {
-
     // calls the message handler from message-handler.js and passes in the socket and userid
     messageHandler.handleMessage(socket, users);
   });
@@ -47,9 +46,11 @@ io.on("connection", socket => {
         // setting username and avatar variables inside the user object 
         users[socket.id].userName = action.data; // action.data = username in this case
         users[socket.id].avatar = createUserAvatarUrl();
-
         // emit new action containing the user data
         io.emit("action", { type: "users_online", data: createUsersOnline()})
+        break;
+      case "server/private-message":
+        console.log("Got priv message", action.data);
         break;
     }
   });
