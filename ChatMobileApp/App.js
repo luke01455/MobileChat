@@ -18,10 +18,10 @@ const socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 // creating the reducer, listening for messages
 function reducer(state = {}, action) {
   switch(action.type) {
-    case "message":
-      return { ...state, message: action.data};
     case "users_online":
       return { ...state, usersOnline: action.data};
+    case "self_user":
+      return { ...state, selfUser: action.data };
     default:
       return state;
   }
@@ -34,9 +34,6 @@ const store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
 store.subscribe(() => {
   console.log("new state", store.getState());
 });
-
-// dispatching test even to make sure it works
-store.dispatch({ type: "server/hello", data: "Hello!" });
 
 export default function App() {
   return (

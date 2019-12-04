@@ -25,11 +25,7 @@ io.on("connection", socket => {
   console.log(socket.id);
   // created a map situation where each new person who uses the app is assigned a uuid and a socketID
   users[socket.id] = { userId: uuidv1() };
-  // adds a username to the socket map key which the user can select
-  socket.on("join", username => {
-    // calls the message handler from message-handler.js and passes in the socket and userid
-    messageHandler.handleMessage(socket, users);
-  });
+
   socket.on("disconnect", () => {
     delete users[socket.id];
     io.emit("action", { type: "users_online", data: createUsersOnline()})
@@ -37,17 +33,15 @@ io.on("connection", socket => {
   socket.on("action", action => {
     // listens for different socket.io action types and does something based on the action type
     switch (action.type) {
-      case "server/hello":
-        // emitting test action literally just passing a string to server
-        socket.emit("action", { type: "message", data: "Good day!" });
-        break;
       case "server/join":
         console.log("Got join event", action.data);
         // setting username and avatar variables inside the user object 
         users[socket.id].userName = action.data; // action.data = username in this case
         users[socket.id].avatar = createUserAvatarUrl();
         // emit new action containing the user data
-        io.emit("action", { type: "users_online", data: createUsersOnline()})
+        io.emit("action", { type: "users_online", data: createUsersOnline()});
+        // makes a redux state which carries the data of the socket id of the current client
+        socket.emit("action", { type: "self_user", data: users[socket.id] });
         break;
       case "server/private-message":
         console.log("Got priv message", action.data);

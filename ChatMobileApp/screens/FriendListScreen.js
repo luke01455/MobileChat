@@ -3,17 +3,18 @@ import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react
 import { useSelector } from 'react-redux';
 
 const FriendListScreen = ({ navigation }) => {
+    // extracts data from redux store state
     const usersOnline = useSelector(state => state.usersOnline);
-    console.log("usersOnline", usersOnline);
-
+    // declaring from stylesheet
     const { itemContainerStyle, avatarImgStyle, userNameViewStyle } = styles;
 
     return (
         <View style={{ flex: 1 }}>
+            {/* list maker tool from react native */}
             <FlatList 
                 data={usersOnline}
-                renderItem={({item}) =>{
-                    console.log("item", item);
+                // item being each item on the list
+                renderItem={({item}) => {
                 return (
                     <TouchableOpacity onPress={() => 
                         navigation.navigate("Chat", 

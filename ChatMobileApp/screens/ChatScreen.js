@@ -2,7 +2,7 @@ import React from "react";
 import { View, Platform, KeyboardAvoidingView } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import { Header } from 'react-navigation-stack';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // access the prop passed down from navigation and set it as title
 ChatScreen.navigationOptions = screenProps => ({
@@ -11,6 +11,8 @@ ChatScreen.navigationOptions = screenProps => ({
 
 export default function ChatScreen({ navigation }) {
   const dispatch = useDispatch();
+  const selfUser = useSelector(state => state.selfUser);
+
   return (
     <View style={{ flex: 1 }}>
       {/* Gifted chat bootstrap UI message view  */}
@@ -27,7 +29,7 @@ export default function ChatScreen({ navigation }) {
         }
         // this is left as 1 so on the front end this will look like the messages from themself should be blue
         user={{
-          _id: 1
+          _id: selfUser.userId
         }}
       />
 
